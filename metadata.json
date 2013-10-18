@@ -1,0 +1,11 @@
+{
+	"uuid": "app-menu-window-title@eternal-sorrow.github.com", 
+	"name": "AppMenu Window Title", 
+	"shell-version": [
+        "3.6",
+        "3.8"
+	], 
+	"description": "Shows the title of windows in the status bar.",
+    "version": 0.1,
+    "url":"http://example.com"
+}
