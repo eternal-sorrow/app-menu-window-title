@@ -1,11 +1,23 @@
 /**
  * app-menu-window-title extension
  * @autor: eternal-sorrow <sergamena at mail dot ru>
-
+ *
  * Based on StatusTitleBar extension,written by @emerino
  *
  * This extension makes the AppMenuButton show the title of
  * the current focused window,instead of the application's name.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see {http://www.gnu.org/licenses/}.
  *
  */
 
