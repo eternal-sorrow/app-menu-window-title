@@ -24,7 +24,7 @@ Installation
     git clone https://github.com/eternal-sorrow/app-menu-window-title.git
     mv app-menu-window-title app-menu-window-title@eternal-sorrow.github.com
     
-Licence
+License
 -------
 
 This program is free software: you can redistribute it and/or modify
