@@ -8,15 +8,14 @@ This extension is based on
 [Status Title Bar] (https://github.com/emerinohdz/StatusTitleBar)
 extension, written by
 [Edgar Merino] (https://github.com/emerinohdz),
-but is much more simple.
+but is much simpler.
 
 Note
 ----
 
 For best results, use the extension
 [Extend left box] (https://extensions.gnome.org/extension/51/extend-left-box)
-by [Stephen Zhang] (https://github.com/StephenPCG)
-.
+by [Stephen Zhang] (https://github.com/StephenPCG).
 
 Installation
 ------------
