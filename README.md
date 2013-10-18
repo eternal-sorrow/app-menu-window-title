@@ -1,5 +1,5 @@
-Status Title Bar
-================
+AppMenu Window Title
+====================
 
 Gnome-Shell extension that shows the current focused window's title. It doesn't
 replace the current AppButton, just changes it's label.
