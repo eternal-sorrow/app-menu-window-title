@@ -6,6 +6,6 @@
         "3.8"
 	], 
 	"description": "Gnome-Shell extension that shows the current focused window's title.",
-    "version": 0.1,
+    "version": 2,
     "url":"https://github.com/eternal-sorrow/app-menu-window-title"
 }

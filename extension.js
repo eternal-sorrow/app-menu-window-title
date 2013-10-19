@@ -21,172 +21,66 @@
  *
  */
 
-const Lang = imports.lang;
-
-const Shell = imports.gi.Shell;
 const Main = imports.ui.main;
-const Signals = imports.signals;
 
-const app_menu_window_title_handler = new Lang.Class
-({
-	Name: 'app_menu_window_title_handler',
-
-	_init: function(app_menu)
-	{
-
-		this.app_menu=app_menu;
-		
-		this.starting_apps = [];
-		
-		this.app_menu_changed = false;
-
-		/*** Holders for local tracked signals ***/
-		this.main_signals = [];
-		this.ws_signals = [];
-		this.target_app_signals = [];
-		
-
-		this.connect_and_track
-		(
-			this.main_signals,
-			Shell.WindowTracker.get_default(),
-			'notify::focus-app',
-			Lang.bind(this,this.on_focus_app_changed)
-		);
-
-		this.connect_and_track
-		(
-			this.main_signals,
-			global.window_manager,
-			'switch-workspace',
-			Lang.bind(this,this._sync)
-		);
-
-		this.connect_and_track
-		(
-			this.main_signals,
-			global.screen,
-			'notify::n-workspaces',
-			Lang.bind(this,this.on_change_n_workspaces)
-		);
-
-		this.connect_and_track
-		(
-			this.main_signals,
-			this.app_menu,
-			'changed',
-			Lang.bind(this,this.on_app_menu_changed)
-		);
-
-
-		this.on_change_n_workspaces();
-	},
+function on_app_menu_changed()
+{
+	let win = global.display.focus_window;
 	
-	/** Utility functions **/
-	connect_and_track: function (signals,subject,name,cb)
+	if(win == null)
+		return;
+
+	if(!win._app_menu_win_ttl_chnd_sig_id_)
+		init_window(win);
+
+	Main.panel.statusArea.appMenu._label.setText(win.title);
+}
+
+function on_window_title_changed(win)
+{
+	if(win.has_focus())
 	{
-		signals.push([subject,subject.connect(name,cb)]);
-	},
+		Main.panel.statusArea.appMenu._label.setText(win.title);
+	}
+}
 
-	disconnect_tracked_signals: function(signals)
+function init_window(win)
+{
+	if(win._app_menu_win_ttl_chnd_sig_id_)
 	{
-		if(signals.length<1)
-			return;
-		signals.forEach(function(sig){sig[0].disconnect(sig[1]);});
-	},
+		win.disconnect(win._app_menu_win_ttl_chnd_sig_id_);
+	}
 
+	win._app_menu_win_ttl_chnd_sig_id_ = win.connect
+	(
+		"notify::title",
+		on_window_title_changed
+	);
+}
 
-	on_focus_app_changed: function()
-	{
-		if(!Shell.WindowTracker.get_default().focus_app)
-		{
-			// If the app has just lost focus to the panel, pretend
-			// nothing happened; otherwise you can't keynav to the
-			// app menu.
-			if(global.stage_input_mode == Shell.StageInputMode.FOCUSED)
-				return;
-		}
-		this._sync();
-	},
-	
-	on_change_n_workspaces: function()
-	{
-		this.disconnect_tracked_signals(this.ws_signals);
+let app_menu_changed_connection=null;
 
-		for(let i = 0;i<global.screen.n_workspaces;++i )
-			this.connect_and_track
-			(
-				this.ws_signals,
-				global.screen.get_workspace_by_index(i),
-				'window-removed',
-				Lang.bind(this,this._sync)
-			);
-	},
+function init(){}
 
-
-	on_window_title_changed: function(win)
-	{
-		if(win.has_focus())
-		{
-			this.app_menu._label.setText(win.title);
-		}
-	},
-
-	on_app_menu_changed: function()
-	{
-		this.app_menu_changed=true;
-		this._sync();
-		this.app_menu_changed=false;
-	},
+function enable()
+{
+	app_menu_changed_connection=Main.panel.statusArea.appMenu.connect
+	(
+		'changed',
+		on_app_menu_changed
+	);
 	
 
+	on_app_menu_changed();
+}
 
-	/** Actually: sync  **/
-	_sync: function()
-	{
-		let win = global.display.focus_window;
-		
-		if(win == null)
-			return;
-
-		if(!win._app_menu_win_ttl_chnd_sig_id_)
-			this.init_window(win);
-
-		this.app_menu._label.setText(win.title);
-
-		this.disconnect_tracked_signals(this.target_app_signals);
-
-		if(!this.app_menu_changed)
-			this.app_menu.emit('changed');
-	},
-
-
-
-	init_window: function(win)
-	{
-		if(win._app_menu_win_ttl_chnd_sig_id_)
-		{
-			win.disconnect(win._app_menu_win_ttl_chnd_sig_id_);
-		}
-
-		win._app_menu_win_ttl_chnd_sig_id_ = win.connect
-		(
-			"notify::title",
-			Lang.bind(this,this.on_window_title_changed)
-		);
-	},
-
-	destroy: function()
-	{
+function disable()
+{
 		// disconnect signals
-		this.disconnect_tracked_signals(this.main_signals);
+		Main.panel.statusArea.appMenu.disconnect(app_menu_changed_connection);
 
-		// any signals from on_change_n_workspaces
-		this.disconnect_tracked_signals(this.ws_signals);
-
-		// any signals from init_window.
-		// _sync requires the _app_menu_win_ttl_chnd_sig_id_.
 		let windows = global.get_window_actors();
+
 		for (let i = 0; i < windows.length; ++i)
 		{
 			let win = windows[i];
@@ -196,34 +90,4 @@ const app_menu_window_title_handler = new Lang.Class
 				delete win._app_menu_win_ttl_chnd_sig_id_;
 			}
 		}
-
-		// any signals from _sync
-		this.disconnect_tracked_signals(this.target_app_signals);
-
-		// Call parent destroy.
-		this.parent();
-	}
-});
-
-Signals.addSignalMethods(app_menu_window_title_handler.prototype);
-
-// lightweight object,acts only as a holder when ext disabled
-let handler = null; 
-
-function init()
-{
-
-}
-
-function enable()
-{
-	handler = new app_menu_window_title_handler
-	(
-		Main.panel.statusArea.appMenu
-	);
-}
-
-function disable()
-{
-	handler.destroy();
 }
