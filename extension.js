@@ -76,18 +76,22 @@ function enable()
 
 function disable()
 {
-		// disconnect signals
-		Main.panel.statusArea.appMenu.disconnect(app_menu_changed_connection);
+	// disconnect signals
+	Main.panel.statusArea.appMenu.disconnect(app_menu_changed_connection);
 
-		let windows = global.get_window_actors();
+	let windows = global.get_window_actors();
 
-		for (let i = 0; i < windows.length; ++i)
+	for (let i = 0; i < windows.length; ++i)
+	{
+		let win = windows[i];
+		if(win._app_menu_win_ttl_chnd_sig_id_)
 		{
-			let win = windows[i];
-			if(win._app_menu_win_ttl_chnd_sig_id_)
-			{
-				win.disconnect(win._app_menu_win_ttl_chnd_sig_id_);
-				delete win._app_menu_win_ttl_chnd_sig_id_;
-			}
+			win.disconnect(win._app_menu_win_ttl_chnd_sig_id_);
+			delete win._app_menu_win_ttl_chnd_sig_id_;
 		}
+	}
+
+	//change back the app menu button's label to the application name
+	//(c)fmuellner
+	Main.panel.statusArea.appMenu._sync();
 }
