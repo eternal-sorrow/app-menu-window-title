@@ -31,7 +31,12 @@ function on_app_menu_changed()
 		return;
 
 	if(!win._app_menu_win_ttl_chnd_sig_id_)
-		init_window(win);
+		win._app_menu_win_ttl_chnd_sig_id_ = win.connect
+		(
+			"notify::title",
+			on_window_title_changed
+		);
+
 
 	Main.panel.statusArea.appMenu._label.setText(win.title);
 }
@@ -42,20 +47,6 @@ function on_window_title_changed(win)
 	{
 		Main.panel.statusArea.appMenu._label.setText(win.title);
 	}
-}
-
-function init_window(win)
-{
-	if(win._app_menu_win_ttl_chnd_sig_id_)
-	{
-		win.disconnect(win._app_menu_win_ttl_chnd_sig_id_);
-	}
-
-	win._app_menu_win_ttl_chnd_sig_id_ = win.connect
-	(
-		"notify::title",
-		on_window_title_changed
-	);
 }
 
 let app_menu_changed_connection=null;
