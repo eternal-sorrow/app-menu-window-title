@@ -23,6 +23,7 @@
 
 const Main = imports.ui.main;
 const Shell = imports.gi.Shell;
+const Meta = imports.gi.Meta;
 
 /* Set title only on maximized windows */
 const win_title_only_on_maximize = true;
@@ -43,7 +44,9 @@ function on_app_menu_changed()
 function set_title(win)
 {
         let title;
-        if(win_title_only_on_maximize && !win.get_maximized())
+
+        if(win_title_only_on_maximize &&
+           win.get_maximized() != Meta.MaximizeFlags.BOTH)
         {
                 let tracker = Shell.WindowTracker.get_default();
                 let app = tracker.get_window_app(win);
