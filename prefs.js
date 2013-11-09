@@ -1,3 +1,5 @@
+/* -*- mode: js; js-basic-offset: 8; indent-tabs-mode: nil -*- */
+
 /**
  * app-menu-window-title extension preferences
  * @author: Shay Elkin <shay@shayel.org>
@@ -22,23 +24,13 @@
 const Gtk = imports.gi.Gtk;
 const Gio = imports.gi.Gio;
 const ExtensionUtils = imports.misc.extensionUtils;
+const Convenience = ExtensionUtils.getCurrentExtension().imports.convenience;
 
 function init(){}
 
-function getSettings() {
-    let extension = ExtensionUtils.getCurrentExtension();    
-    let schemas_dir = extension.dir.get_child('schemas').get_path();
-    
-    let source = Gio.SettingsSchemaSource.new_from_directory(schemas_dir,
-                                                             Gio.SettingsSchemaSource.get_default(),
-                                                             false);
-    
-    let schema = source.lookup('org.gnome.shell.extensions.app-menu-window-title', false);
-    return new Gio.Settings({ settings_schema: schema });
-}
-
 function buildPrefsWidget() {
-    let settings = getSettings();
+    let settings = Convenience.getSettings();
+    
     let frame = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL,
                               border_width: 10 });
 
@@ -50,7 +42,7 @@ function buildPrefsWidget() {
 
     let box = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL,
                             margin_left: 20 });
- 
+    
     frame.add(box);
 
     let current = settings.get_boolean('only-on-maximize');
