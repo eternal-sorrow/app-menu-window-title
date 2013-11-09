@@ -1,6 +1,6 @@
 /**
  * app-menu-window-title extension
- * @autor: eternal-sorrow <sergamena at mail dot ru>
+ * @author: eternal-sorrow <sergamena at mail dot ru>
  *
  * Based on StatusTitleBar extension,written by @emerino
  *
@@ -24,9 +24,8 @@
 const Main = imports.ui.main;
 const Shell = imports.gi.Shell;
 const Meta = imports.gi.Meta;
-
-/* Set title only on maximized windows */
-const win_title_only_on_maximize = true;
+const Gio = imports.gi.Gio;
+const ExtensionUtils = imports.misc.extensionUtils;
 
 function on_app_menu_changed()
 {
@@ -43,6 +42,8 @@ function on_app_menu_changed()
 
 function set_title(win)
 {
+        /* Set title only on maximized windows */
+        let win_title_only_on_maximize = settings.get_boolean('only-on-maximize');
         let title;
 
         if(win_title_only_on_maximize &&
@@ -85,8 +86,29 @@ function init_window(win)
 let app_menu_changed_connection=null;
 let app_maximize_connection=null;
 let app_unmaximize_connection=null;
-
 function init(){}
+
+function get_settings()
+{
+        let extension = ExtensionUtils.getCurrentExtension();    
+        let schemas_dir = extension.dir.get_child('schemas').get_path();
+    
+        let source = Gio.SettingsSchemaSource.new_from_directory
+        (
+                schemas_dir,
+                Gio.SettingsSchemaSource.get_default(),
+                false
+        );
+    
+        let schema = source.lookup(
+                'org.gnome.shell.extensions.app-menu-window-title',
+                false
+        );
+    
+        return new Gio.Settings({ settings_schema: schema });
+}
+
+let settings=get_settings();
 
 function enable()
 {
