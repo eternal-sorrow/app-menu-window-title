@@ -1,0 +1,10 @@
+<schemalist>
+  <schema id="org.gnome.shell.extensions.app-menu-window-title" path="/org/gnome/shell/extensions/app-menu-window-title/">
+    <key name="only-on-maximize" type="b">
+      <default>false</default>
+      <summary>Show title only for maximized windows</summary>
+      <description>Will replace title just for maximized windows if
+      true, or fall all the windows if false</description>
+    </key>
+  </schema>
+</schemalist>
