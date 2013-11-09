@@ -1,3 +1,5 @@
+/* -*- mode: js; js-basic-offset: 8; indent-tabs-mode: nil -*- */
+
 /**
  * app-menu-window-title extension
  * @author: eternal-sorrow <sergamena at mail dot ru>
@@ -26,6 +28,7 @@ const Shell = imports.gi.Shell;
 const Meta = imports.gi.Meta;
 const Gio = imports.gi.Gio;
 const ExtensionUtils = imports.misc.extensionUtils;
+const Convenience = ExtensionUtils.getCurrentExtension().imports.convenience;
 
 function on_app_menu_changed()
 {
@@ -43,7 +46,7 @@ function on_app_menu_changed()
 function set_title(win)
 {
         /* Set title only on maximized windows */
-        let win_title_only_on_maximize = settings.get_boolean('only-on-maximize');
+        let win_title_only_on_maximize = _settings.get_boolean('only-on-maximize');
         let title;
 
         if(win_title_only_on_maximize &&
@@ -86,29 +89,11 @@ function init_window(win)
 let app_menu_changed_connection=null;
 let app_maximize_connection=null;
 let app_unmaximize_connection=null;
-function init(){}
+let _settings=null;
 
-function get_settings()
-{
-        let extension = ExtensionUtils.getCurrentExtension();    
-        let schemas_dir = extension.dir.get_child('schemas').get_path();
-    
-        let source = Gio.SettingsSchemaSource.new_from_directory
-        (
-                schemas_dir,
-                Gio.SettingsSchemaSource.get_default(),
-                false
-        );
-    
-        let schema = source.lookup(
-                'org.gnome.shell.extensions.app-menu-window-title',
-                false
-        );
-    
-        return new Gio.Settings({ settings_schema: schema });
+function init(){
+    _settings = Convenience.getSettings();
 }
-
-let settings=get_settings();
 
 function enable()
 {
