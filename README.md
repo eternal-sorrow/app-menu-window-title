@@ -44,3 +44,7 @@ Author
 ------
 
 [Eternal Sorrow](https://github.com/eternal-sorrow) (sergamena at mail dot ru)
+
+Contains code from
+[gnome-shell-extensions](https://git.gnome.org/browse/gnome-shell-extensions/)
+by Giobanni Campagna
