@@ -1,6 +1,8 @@
+/* -*- mode: js; js-basic-offset: 8; indent-tabs-mode: nil -*- */
+
 /**
  * app-menu-window-title extension
- * @autor: eternal-sorrow <sergamena at mail dot ru>
+ * @author: eternal-sorrow <sergamena at mail dot ru>
  *
  * Based on StatusTitleBar extension,written by @emerino
  *
@@ -13,19 +15,48 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see {http://www.gnu.org/licenses/}.
+ * along with this program. If not, see {http://www.gnu.org/licenses/}.
  *
  */
 
 const Main = imports.ui.main;
+const Shell = imports.gi.Shell;
+const Meta = imports.gi.Meta;
+const Gio = imports.gi.Gio;
+const ExtensionUtils = imports.misc.extensionUtils;
+const Convenience = ExtensionUtils.getCurrentExtension().imports.convenience;
 
-function on_app_menu_changed()
+function set_title(win)
 {
-	let win = global.display.focus_window;
+	/* Set title only on maximized windows */
+	let win_title_only_on_maximize = _settings.get_boolean('only-on-maximize');
+	let title;
+
+	if
+	(
+		win_title_only_on_maximize &&
+		(win.get_maximized() != Meta.MaximizeFlags.BOTH)
+	)
+	{
+		let tracker=Shell.WindowTracker.get_default();
+		let app=tracker.get_window_app(win);
+		title=app.get_name();	
+	}
+	else
+	{
+		title = win.get_title();
+	}
+
+	Main.panel.statusArea.appMenu._label.setText(title);
+}
+
+function on_signal()
+{
+	let win = global.display.get_focus_window();
 	
 	if(win == null)
 		return;
@@ -38,31 +69,49 @@ function on_app_menu_changed()
 		);
 
 
-	Main.panel.statusArea.appMenu._label.setText(win.title);
+	set_title(win);
 }
 
 function on_window_title_changed(win)
 {
 	if(win.has_focus())
 	{
-		Main.panel.statusArea.appMenu._label.setText(win.title);
+		set_title(win)
 	}
 }
 
 let app_menu_changed_connection=null;
+let app_maximize_connection=null;
+let app_unmaximize_connection=null;
+let _settings=null;
 
-function init(){}
+function init()
+{
+	_settings = Convenience.getSettings();
+}
 
 function enable()
 {
 	app_menu_changed_connection=Main.panel.statusArea.appMenu.connect
 	(
 		'changed',
-		on_app_menu_changed
+		on_signal
 	);
 	
+	app_maximize_connection = global.window_manager.connect
+	(
+		'maximize',
+		on_signal
+	);
 
-	on_app_menu_changed();
+	app_unmaximize_connection = global.window_manager.connect
+	(
+		'unmaximize',
+		on_signal
+	);
+
+
+	on_signal();
 }
 
 function disable()
@@ -81,6 +130,11 @@ function disable()
 			delete win._app_menu_win_ttl_chnd_sig_id_;
 		}
 	}
+
+	if (app_maximize_connection)
+		global.window_manager.disconnect(app_maximize_connection);
+	if (app_unmaximize_connection)
+		global.window_manager.disconnect(app_unmaximize_connection);
 
 	//change back the app menu button's label to the application name
 	//(c)fmuellner

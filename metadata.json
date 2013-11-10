@@ -2,10 +2,11 @@
 	"uuid": "app-menu-window-title@eternal-sorrow.github.com", 
 	"name": "AppMenu Window Title", 
 	"shell-version": [
-        "3.6",
-        "3.8"
+		"3.6",
+		"3.8"
 	], 
 	"description": "Gnome-Shell extension that shows the current focused window's title.",
-    "version": 4,
-    "url":"https://github.com/eternal-sorrow/app-menu-window-title"
+	"version": 4,
+	"url": "https://github.com/eternal-sorrow/app-menu-window-title",
+	"settings-schema": "org.gnome.shell.extensions.app-menu-window-title"
 }
