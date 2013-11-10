@@ -1,0 +1,30 @@
+# Gnome-Shell extension that shows the current focused window's title..
+# Copyright (C) 2013 Eternal Sorrow
+# This file is distributed under the same license as the PACKAGE package.
+# Eternal Sorrow <sergamena@inbox.ru>, 2013.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: app-menu-window-title 4\n"
+"Report-Msgid-Bugs-To: https://github.com/eternal-sorrow/app-menu-window-title/issues\n"
+"POT-Creation-Date: 2013-11-10 18:01+1100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: prefs.js:45
+msgid "Show title for:"
+msgstr ""
+
+#: prefs.js:56
+msgid "All windows"
+msgstr ""
+
+#: prefs.js:63
+msgid "Maximized windows only"
+msgstr ""

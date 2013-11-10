@@ -1,4 +1,4 @@
-/* -*- mode: js; js-basic-offset: 8; indent-tabs-mode: nil -*- */
+/* -*- mode: js; js-basic-offset: 4; indent-tabs-mode: tabs -*- */
 
 /**
  * app-menu-window-title extension preferences
@@ -26,47 +26,72 @@ const Gio = imports.gi.Gio;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Convenience = ExtensionUtils.getCurrentExtension().imports.convenience;
 
-function init(){}
+const Gettext = imports.gettext;
+const _= Gettext.domain('gnome-shell-extensions-app-menu-window-title').gettext;
+const GLib = imports.gi.GLib;
+
+
+function init()
+{
+	let extension = ExtensionUtils.getCurrentExtension();
+	let localeDir = extension.dir.get_child('locale').get_path();
+
+	// Extension installed in .local
+	if(GLib.file_test(localeDir, GLib.FileTest.EXISTS))
+	{
+		Gettext.bindtextdomain
+		(
+			'gnome-shell-extensions-app-menu-window-title',
+			localeDir
+		);
+	}
+	// Extension installed system-wide
+	else {
+		Gettext.bindtextdomain
+		(
+			'gnome-shell-extensions-app-menu-window-title',
+			extension.metadata.locale
+		);
+	}
+}
 
 function buildPrefsWidget() {
-    let settings = Convenience.getSettings();
-    
-    let frame = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL,
-                              border_width: 10 });
+	let settings = Convenience.getSettings();
+	
+	let frame = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL,
+							  border_width: 10 });
 
-    // TODO: I18N using Gettext
+	frame.add(new Gtk.Label({ label: "<b>"+_("Show title for:")+"</b>",
+							  use_markup: true,
+							  xalign: 0 }));
 
-    frame.add(new Gtk.Label({ label: "<b>Show title for:</b>",
-                              use_markup: true,
-                              xalign: 0 }));
+	let box = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL,
+							margin_left: 20 });
+	
+	frame.add(box);
 
-    let box = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL,
-                            margin_left: 20 });
-    
-    frame.add(box);
+	let current = settings.get_boolean('only-on-maximize');
+	
+	let allWindows = new Gtk.RadioButton({ label: _("All windows") });
+	allWindows.set_active(!current);
+	allWindows.connect('toggled', function(btn) {
+		if(btn.get_active())
+			settings.set_boolean('only-on-maximize', false);
+	});
+	
+	let maximizedOnly = new Gtk.RadioButton({label: _("Maximized windows only"),
+											 group: allWindows });
+	maximizedOnly.set_active(current);
+	maximizedOnly.connect('toggled', function(btn) {
+		if(btn.get_active())
+			settings.set_boolean('only-on-maximize', true);
+	});
 
-    let current = settings.get_boolean('only-on-maximize');
-    
-    let allWindows = new Gtk.RadioButton({ label: "All windows" });
-    allWindows.set_active(!current);
-    allWindows.connect('toggled', function(btn) {
-        if(btn.get_active())
-            settings.set_boolean('only-on-maximize', false);
-    });
-    
-    let maximizedOnly = new Gtk.RadioButton({ label: "Maximized windows only",
-                                              group: allWindows });
-    maximizedOnly.set_active(current);
-    maximizedOnly.connect('toggled', function(btn) {
-        if(btn.get_active())
-            settings.set_boolean('only-on-maximize', true);
-    });
+	box.add(allWindows);
+	box.add(maximizedOnly);
 
-    box.add(allWindows);
-    box.add(maximizedOnly);
-
-    frame.show_all();
-    return frame;
+	frame.show_all();
+	return frame;
 }
 
 

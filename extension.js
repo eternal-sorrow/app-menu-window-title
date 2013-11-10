@@ -1,10 +1,10 @@
-/* -*- mode: js; js-basic-offset: 8; indent-tabs-mode: nil -*- */
+/* -*- mode: js; js-basic-offset: 4; indent-tabs-mode: tabs -*- */
 
 /**
  * app-menu-window-title extension
  * @author: eternal-sorrow <sergamena at mail dot ru>
  *
- * Based on StatusTitleBar extension,written by @emerino
+ * Based on StatusTitleBar extension, written by @emerino
  *
  * This extension makes the AppMenuButton show the title of
  * the current focused window,instead of the application's name.
