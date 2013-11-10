@@ -43,4 +43,4 @@ along with this program.  If not, see {http://www.gnu.org/licenses/}.
 Author
 ------
 
-[Eternal Sorrow](https://github.com/eternal-sorrow) (sergmena at mail dot ru)
+[Eternal Sorrow](https://github.com/eternal-sorrow) (sergamena at mail dot ru)
