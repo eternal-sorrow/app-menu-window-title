@@ -3,8 +3,9 @@
 	"name": "AppMenu Window Title", 
 	"shell-version": [
 		"3.6",
-		"3.8"
-	], 
+		"3.8",
+		"3.10"
+		],
 	"description": "Gnome-Shell extension that shows the current focused window's title.",
 	"version": 4,
 	"url": "https://github.com/eternal-sorrow/app-menu-window-title",
