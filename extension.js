@@ -23,23 +23,22 @@
  *
  */
 
-const Main = imports.ui.main;
-const Shell = imports.gi.Shell;
-const Meta = imports.gi.Meta;
-const Gio = imports.gi.Gio;
-const ExtensionUtils = imports.misc.extensionUtils;
-const Convenience = ExtensionUtils.getCurrentExtension().imports.convenience;
+const Main=imports.ui.main;
+const Shell=imports.gi.Shell;
+const Meta=imports.gi.Meta;
+const ExtensionUtils=imports.misc.extensionUtils;
+const Convenience=ExtensionUtils.getCurrentExtension().imports.convenience;
 
 function set_title(win)
 {
 	/* Set title only on maximized windows */
-	let win_title_only_on_maximize = _settings.get_boolean('only-on-maximize');
+	let win_title_only_on_maximize=_settings.get_boolean('only-on-maximize');
 	let title;
 
 	if
 	(
-		win_title_only_on_maximize &&
-		(win.get_maximized() != Meta.MaximizeFlags.BOTH)
+		(win_title_only_on_maximize)&&
+		(win.get_maximized()!=Meta.MaximizeFlags.BOTH)
 	)
 	{
 		let tracker=Shell.WindowTracker.get_default();
@@ -48,26 +47,38 @@ function set_title(win)
 	}
 	else
 	{
-		title = win.get_title();
+		title=win.get_title();
 	}
 
 	Main.panel.statusArea.appMenu._label.setText(title);
 }
 
-function on_signal()
+function init_window(win)
 {
-	let win = global.display.get_focus_window();
-	
-	if(win == null)
-		return;
-
-	if(!win._app_menu_win_ttl_chnd_sig_id_)
-		win._app_menu_win_ttl_chnd_sig_id_ = win.connect
+	if(!win._app_menu_win_ttl_chnd_cntn_)
+		win._app_menu_win_ttl_chnd_cntn_=win.connect
 		(
 			"notify::title",
 			on_window_title_changed
 		);
 
+	if(!win._app_menu_win_ttl_fcsd_cntn_)
+		win._app_menu_win_fcsd_cntn_=win.connect
+		(
+			"focus",
+			on_signal
+		);
+
+}
+
+function on_signal()
+{
+	let win=global.display.get_focus_window();
+	
+	if(win==null)
+		return;
+
+	init_window(win);
 
 	set_title(win);
 }
@@ -75,19 +86,18 @@ function on_signal()
 function on_window_title_changed(win)
 {
 	if(win.has_focus())
-	{
-		set_title(win)
-	}
+		set_title(win);
 }
 
 let app_menu_changed_connection=null;
 let app_maximize_connection=null;
 let app_unmaximize_connection=null;
+let window_created_connection=null;
 let _settings=null;
 
 function init()
 {
-	_settings = Convenience.getSettings();
+	_settings=Convenience.getSettings();
 }
 
 function enable()
@@ -98,18 +108,36 @@ function enable()
 		on_signal
 	);
 	
-	app_maximize_connection = global.window_manager.connect
+	app_maximize_connection=global.window_manager.connect
 	(
 		'maximize',
 		on_signal
 	);
 
-	app_unmaximize_connection = global.window_manager.connect
+	app_unmaximize_connection=global.window_manager.connect
 	(
 		'unmaximize',
 		on_signal
 	);
 
+	window_created_connection=global.display.connect
+	(
+		'window-created',
+		function(display,win)
+		{
+    		init_window(win);
+    	}
+    );
+    
+    global.get_window_actors().forEach
+    (
+    	function(win)
+    	{
+    		let meta_win=win.get_meta_window();
+    		if(meta_win)
+    			init_window(meta_win);
+    	}
+    );
 
 	on_signal();
 }
@@ -117,24 +145,37 @@ function enable()
 function disable()
 {
 	// disconnect signals
-	Main.panel.statusArea.appMenu.disconnect(app_menu_changed_connection);
-
-	let windows = global.get_window_actors();
-
-	for (let i = 0; i < windows.length; ++i)
-	{
-		let win = windows[i];
-		if(win._app_menu_win_ttl_chnd_sig_id_)
-		{
-			win.disconnect(win._app_menu_win_ttl_chnd_sig_id_);
-			delete win._app_menu_win_ttl_chnd_sig_id_;
-		}
-	}
-
-	if (app_maximize_connection)
+	if(app_menu_changed_connection)
+		Main.panel.statusArea.appMenu.disconnect(app_menu_changed_connection);
+	if(app_maximize_connection)
 		global.window_manager.disconnect(app_maximize_connection);
-	if (app_unmaximize_connection)
+	if(app_unmaximize_connection)
 		global.window_manager.disconnect(app_unmaximize_connection);
+	if(window_created_connection)
+		global.display.disconnect(window_created_connection);
+
+	global.get_window_actors().forEach
+	(
+	function(win)
+		{
+			let meta_win=win.get_meta_window();
+			if(meta_win)
+			{
+				if(meta_win._app_menu_win_ttl_chnd_cntn_)
+				{
+					meta_win.disconnect(meta_win._app_menu_win_ttl_chnd_cntn_);
+					delete meta_win._app_menu_win_ttl_chnd_cntn_;
+				}
+
+				if(meta_win._app_menu_win_ttl_fcsd_cntn_)
+				{
+					meta_win.disconnect(meta_win._app_menu_win_ttl_fcsd_cntn_);
+					delete meta_win._app_menu_win_ttl_fcsd_cntn_;
+				}
+			}
+		}
+	);
+
 
 	//change back the app menu button's label to the application name
 	//(c)fmuellner
