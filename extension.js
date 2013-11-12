@@ -79,7 +79,7 @@ function on_window_title_changed(win)
 		set_title(win)
 	}
 }
-
+let on_window_created = null;
 let app_menu_changed_connection=null;
 let app_maximize_connection=null;
 let app_unmaximize_connection=null;
@@ -92,12 +92,24 @@ function init()
 
 function enable()
 {
+	global.get_window_actors().forEach(function(actor) {
+		var meta_win = actor.get_meta_window();
+		if (meta_win) {
+			meta_win.connect('focus', on_signal);
+		}
+		return;
+	});
+
+	on_window_created = global.display.connect('window-created', function(display, win) {
+		win.connect('focus', on_signal);
+	});
+
 	app_menu_changed_connection=Main.panel.statusArea.appMenu.connect
 	(
 		'changed',
 		on_signal
 	);
-	
+
 	app_maximize_connection = global.window_manager.connect
 	(
 		'maximize',
@@ -117,6 +129,17 @@ function enable()
 function disable()
 {
 	// disconnect signals
+
+	global.get_window_actors().forEach(function(actor) {
+		var meta_win = actor.get_meta_window();
+		if (meta_win) {
+			meta_win.disconnect(on_signal);
+		}
+		return;
+	});
+
+	global.display.disconnect(on_window_created);
+
 	Main.panel.statusArea.appMenu.disconnect(app_menu_changed_connection);
 
 	let windows = global.get_window_actors();
