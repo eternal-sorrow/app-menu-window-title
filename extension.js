@@ -63,7 +63,7 @@ function init_window(win)
 		);
 
 	if(!win._app_menu_win_ttl_fcsd_cntn_)
-		win._app_menu_win_fcsd_cntn_=win.connect
+		win._app_menu_win_ttl_fcsd_cntn_=win.connect
 		(
 			"focus",
 			on_signal
