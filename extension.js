@@ -63,7 +63,7 @@ function init_window(win)
 		);
 
 	if(!win._app_menu_win_ttl_fcsd_cntn_)
-		win._app_menu_win_fcsd_cntn_=win.connect
+		win._app_menu_win_ttl_fcsd_cntn_=win.connect
 		(
 			"focus",
 			on_signal
@@ -71,16 +71,30 @@ function init_window(win)
 
 }
 
+function is_application(win)
+{
+	let tracker=Shell.WindowTracker.get_default();
+	if (win)
+	{
+		/* we have a reference on a meta window */
+		return (tracker.is_window_interesting(win));
+	}
+	else
+	{
+		/* we check only against currently focused window */
+		let workspace=global.screen.get_active_workspace();
+		let focusedApp=tracker.focus_app;
+		return (focusedApp && focusedApp.is_on_workspace(workspace));
+	}
+}
+
 function on_signal()
 {
-	let win=global.display.get_focus_window();
-	
-	if(win==null)
-		return;
-
-	init_window(win);
-
-	set_title(win);
+	if (is_application())
+	{
+		let win=global.display.get_focus_window();
+		set_title(win);
+	}
 }
 
 function on_window_title_changed(win)
@@ -125,7 +139,8 @@ function enable()
 		'window-created',
 		function(display,win)
 		{
-    		init_window(win);
+			if (is_application(win))
+				init_window(win);
     	}
     );
     
@@ -134,7 +149,7 @@ function enable()
     	function(win)
     	{
     		let meta_win=win.get_meta_window();
-    		if(meta_win)
+			if(meta_win && is_application(meta_win))
     			init_window(meta_win);
     	}
     );
