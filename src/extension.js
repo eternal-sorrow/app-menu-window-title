@@ -63,7 +63,7 @@ function init_window(win)
 		);
 
 	if(!win._app_menu_win_ttl_fcsd_cntn_)
-		win._app_menu_win_fcsd_cntn_=win.connect
+		win._app_menu_win_ttl_fcsd_cntn_=win.connect
 		(
 			"focus",
 			on_signal
@@ -73,6 +73,16 @@ function init_window(win)
 
 function on_signal()
 {
+
+	if
+	(!(
+		Shell.WindowTracker.get_default().focus_app.is_on_workspace
+		(
+			global.screen.get_active_workspace()
+		)
+	))
+		return;
+
 	let win=global.display.get_focus_window();
 	
 	if(win==null)
@@ -125,7 +135,8 @@ function enable()
 		'window-created',
 		function(display,win)
 		{
-    		init_window(win);
+			if(Shell.WindowTracker.get_default().is_window_interesting(win))
+    			init_window(win);
     	}
     );
     
@@ -134,7 +145,11 @@ function enable()
     	function(win)
     	{
     		let meta_win=win.get_meta_window();
-    		if(meta_win)
+    		if
+    		(
+    			(meta_win)&&
+    			(Shell.WindowTracker.get_default().is_window_interesting(win))
+    		)
     			init_window(meta_win);
     	}
     );
