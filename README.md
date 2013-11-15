@@ -20,10 +20,16 @@ by [Stephen Zhang] (https://github.com/StephenPCG).
 Installation
 ------------
 
-    cd ~/.local/share/gnome-shell/extensions
     git clone https://github.com/eternal-sorrow/app-menu-window-title.git
-    mv app-menu-window-title app-menu-window-title@eternal-sorrow.github.com
+    cd app-menu-window-title
+    ./configure
+    make
+    make install
+
+If you want to uninstall extension, cd to the dir app-menu-window-title and type:
+    make uninstall
     
+
 License
 -------
 
