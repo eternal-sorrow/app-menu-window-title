@@ -14,7 +14,5 @@ js_SCRIPTS = \
 
 EXTRA_DIST = $(js_DATA) $(js_SCRIPTS)
 
-uninstall-local:
-	-rm -r $(jsdir)
 
 

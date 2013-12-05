@@ -73,14 +73,17 @@ function init_window(win)
 
 function on_signal()
 {
-
+	let tracker=Shell.WindowTracker.get_default()
 	if
-	(!(
-		Shell.WindowTracker.get_default().focus_app.is_on_workspace
-		(
-			global.screen.get_active_workspace()
-		)
-	))
+	(
+		(tracker.focus_app)&&
+		(!(
+			tracker.focus_app.is_on_workspace
+			(
+				global.screen.get_active_workspace()
+			)
+		))
+	)
 		return;
 
 	let win=global.display.get_focus_window();
@@ -148,7 +151,7 @@ function enable()
     		if
     		(
     			(meta_win)&&
-    			(Shell.WindowTracker.get_default().is_window_interesting(win))
+    			(Shell.WindowTracker.get_default().is_window_interesting(meta_win))
     		)
     			init_window(meta_win);
     	}

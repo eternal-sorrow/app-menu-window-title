@@ -11,4 +11,4 @@ SUBDIRS = src po schemas
 
 # Remove doc directory on uninstall
 uninstall-local:
-
+	-rm -r $(extensiondir)
