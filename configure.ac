@@ -10,9 +10,6 @@ AC_SUBST(extensiondir)
 
 IT_PROG_INTLTOOL([0.40.0])
 
-AM_GNU_GETTEXT([external])
-AM_GNU_GETTEXT_VERSION([0.17])
-
 GETTEXT_PACKAGE="gnome-shell-extensions-app-menu-window-title"
 AC_SUBST(GETTEXT_PACKAGE)
 
