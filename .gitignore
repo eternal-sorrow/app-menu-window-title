@@ -1,9 +1,5 @@
-# http://www.gnu.org/software/automake
-
 Makefile.in
-
-# http://www.gnu.org/software/autoconf
-
+Makefile
 /autom4te.cache
 /aclocal.m4
 /compile
@@ -12,12 +8,21 @@ Makefile.in
 /install-sh
 /missing
 /stamp-h1
-
-Makefile
 /config.log
 /config.status
+/config.sub
+/config.guess
 /po/POTFILES
 /po/*.gmo
 /po/stamp-it
 /schemas/gschemas.compiled
 /schemas/org.gnome.shell.extensions.app-menu-window-title.gschema.valid
+/config.rpath
+/po/Makevars.template
+/po/Rules-quot
+/po/boldquot.sed
+/po/en@boldquot.header
+/po/en@quot.header
+/po/insert-header.sin
+/po/quot.sed
+/po/remove-potcdate.sin
