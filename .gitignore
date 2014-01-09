@@ -1,5 +1,6 @@
 Makefile.in
 Makefile
+/ABOUT-NLS
 /autom4te.cache
 /aclocal.m4
 /compile
