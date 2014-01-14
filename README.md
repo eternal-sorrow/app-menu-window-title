@@ -10,8 +10,8 @@ extension, written by
 [Edgar Merino] (https://github.com/emerinohdz),
 but is much simpler.
 
-Extension has option to change label of AppButton only if maximized windows are
-focused or for all windows - thanks to [Shay Elkin] (https://github.com/shayel)
+Extension has option whether to change label of AppButton only if maximized
+windows are focused or for all windows - thanks to [Shay Elkin] (https://github.com/shayel)
 
 Note
 ----
