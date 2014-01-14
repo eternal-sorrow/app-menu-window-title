@@ -38,7 +38,10 @@ function set_title(win)
 	if
 	(
 		(win_title_only_on_maximize)&&
-		(win.get_maximized()!=Meta.MaximizeFlags.BOTH)
+		(
+			win.get_maximized()!=
+			(Meta.MaximizeFlags.VERTICAL|Meta.MaximizeFlags.HORIZONTAL)
+		)
 	)
 	{
 		let tracker=Shell.WindowTracker.get_default();
