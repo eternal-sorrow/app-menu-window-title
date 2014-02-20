@@ -23,22 +23,16 @@
 
 const Gtk = imports.gi.Gtk;
 const Gio = imports.gi.Gio;
-const ExtensionUtils = imports.misc.extensionUtils;
-const Convenience = ExtensionUtils.getCurrentExtension().imports.convenience;
+const Convenience = imports.misc.extensionUtils.getCurrentExtension().imports.convenience;
 
-const Gettext = imports.gettext;
-const _= Gettext.domain('gnome-shell-extensions-app-menu-window-title').gettext;
+const locale_domain="gnome-shell-extensions-app-menu-window-title";
+const _= imports.gettext.domain(locale_domain).gettext;
 const GLib = imports.gi.GLib;
 
 
 function init()
 {
-		Gettext.bindtextdomain
-		(
-			'gnome-shell-extensions-app-menu-window-title',
-			ExtensionUtils.getCurrentExtension().dir.get_child('locale')
-				.get_path()
-		);
+	Convenience.initTranslations(locale_domain);
 }
 
 function buildPrefsWidget() {
