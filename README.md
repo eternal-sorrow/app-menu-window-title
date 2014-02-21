@@ -25,8 +25,7 @@ Installation
 
     git clone https://github.com/eternal-sorrow/app-menu-window-title.git
     cd app-menu-window-title
-    autoreconf
-    ./configure
+    ./autogen.sh
     make
     make install
 
