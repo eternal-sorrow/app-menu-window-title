@@ -5,7 +5,8 @@
  * @author: Shay Elkin <shay@shayel.org>
  *
  * This extension makes the AppMenuButton show the title of
- * the current focused window,instead of the application's name.
+ * the current focused window, instead of the application's name.
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -22,13 +23,10 @@
  */
 
 const Gtk = imports.gi.Gtk;
-const Gio = imports.gi.Gio;
 const Convenience = imports.misc.extensionUtils.getCurrentExtension().imports.convenience;
 
 const locale_domain="gnome-shell-extensions-app-menu-window-title";
 const _= imports.gettext.domain(locale_domain).gettext;
-const GLib = imports.gi.GLib;
-
 
 function init()
 {

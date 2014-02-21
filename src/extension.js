@@ -7,7 +7,8 @@
  * Based on StatusTitleBar extension, written by @emerino
  *
  * This extension makes the AppMenuButton show the title of
- * the current focused window,instead of the application's name.
+ * the current focused window, instead of the application's name.
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -26,8 +27,7 @@
 const Main=imports.ui.main;
 const Shell=imports.gi.Shell;
 const Meta=imports.gi.Meta;
-const ExtensionUtils=imports.misc.extensionUtils;
-const Convenience=ExtensionUtils.getCurrentExtension().imports.convenience;
+const Convenience=imports.misc.extensionUtils.getCurrentExtension().imports.convenience;
 
 function set_title(win)
 {
