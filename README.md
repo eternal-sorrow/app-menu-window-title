@@ -4,12 +4,6 @@ AppMenu Window Title
 Gnome-Shell extension that shows the current focused window's title. It doesn't
 replace the current AppButton, just changes it's label.
 
-This extension is based on
-[Status Title Bar] (https://github.com/emerinohdz/StatusTitleBar)
-extension, written by
-[Edgar Merino] (https://github.com/emerinohdz),
-but is much simpler.
-
 Extension has option whether to change label of AppButton only if maximized
 windows are focused or for all windows - thanks to [Shay Elkin] (https://github.com/shayel)
 
