@@ -24,9 +24,9 @@
  *
  */
 
-const Main=imports.ui.main;
 const Shell=imports.gi.Shell;
 const Meta=imports.gi.Meta;
+const AppMenu=imports.ui.main.panel.statusArea.appMenu;
 const Convenience=imports.misc.extensionUtils.getCurrentExtension().imports.convenience;
 
 function set_title()
@@ -48,7 +48,7 @@ function set_title()
 		return false;
 	else
 	{
-		Main.panel.statusArea.appMenu._label.setText(window.get_title());
+		AppMenu._label.setText(window.get_title());
 	}
 
 	return true;
@@ -81,7 +81,7 @@ function on_maximize()
 	if(!window)
 		return;
 
-	Main.panel.statusArea.appMenu._label.setText(window.get_title());
+	AppMenu._label.setText(window.get_title());
 }
 
 function on_minimize()
@@ -95,7 +95,7 @@ function on_minimize()
 	let tracker=Shell.WindowTracker.get_default();
 	let app=tracker.get_window_app(window);
 
-	Main.panel.statusArea.appMenu._label.setText(app.get_name());
+	AppMenu._label.setText(app.get_name());
 }
 
 function on_only_on_maximize_setting_changed()
@@ -107,7 +107,7 @@ function on_only_on_maximize_setting_changed()
 		var tracker=Shell.WindowTracker.get_default();
 		var app=tracker.get_window_app(window);
 
-		Main.panel.statusArea.appMenu._label.setText(app.get_name());
+		AppMenu._label.setText(app.get_name());
 	}
 }
 
@@ -179,5 +179,5 @@ function disable()
 
 	//change back the app menu button's label to the application name
 	//thanks @fmuellner
-	Main.panel.statusArea.appMenu._sync();
+	AppMenu._sync();
 }
