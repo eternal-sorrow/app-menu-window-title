@@ -170,7 +170,7 @@ function disable()
 		global.window_manager.disconnect(app_unmaximize_connection);
 	if(focus_window_notify_connection)
 		global.display.disconnect(focus_window_notify_connection);
-	if(window_title_notify_connection)
+	if((window_title_notify_connection)&&(window))
 		window.disconnect(window_title_notify_connection);
 	if(only_on_maximize_setting_changed_connection)
 		settings.disconnect(only_on_maximize_setting_changed_connection);
