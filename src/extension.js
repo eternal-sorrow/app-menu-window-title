@@ -29,176 +29,155 @@ const Shell=imports.gi.Shell;
 const Meta=imports.gi.Meta;
 const Convenience=imports.misc.extensionUtils.getCurrentExtension().imports.convenience;
 
-function set_title(win)
+function set_title()
 {
-	/* Set title only on maximized windows */
-	let win_title_only_on_maximize=_settings.get_boolean('only-on-maximize');
-	let title;
+	if(!window)
+		return true;
 
 	if
-	(
-		(win_title_only_on_maximize)&&
+	(	/* Set title only on maximized windows */
+		(only_on_maximize)&&
 		(
-			win.get_maximized()!=
-			(Meta.MaximizeFlags.VERTICAL|Meta.MaximizeFlags.HORIZONTAL)
+			window.get_maximized()!=
+			(
+				Meta.MaximizeFlags.VERTICAL|
+				Meta.MaximizeFlags.HORIZONTAL
+			)
 		)
 	)
-	{
-		let tracker=Shell.WindowTracker.get_default();
-		let app=tracker.get_window_app(win);
-		title=app.get_name();	
-	}
+		return false;
 	else
 	{
-		title=win.get_title();
+		Main.panel.statusArea.appMenu._label.setText(window.get_title());
 	}
 
-	Main.panel.statusArea.appMenu._label.setText(title);
+	return true;
 }
 
-function init_window(win)
+function on_focus_window_notify()
 {
-	if(!win._app_menu_win_ttl_chnd_cntn_)
-		win._app_menu_win_ttl_chnd_cntn_=win.connect
-		(
-			"notify::title",
-			on_window_title_changed
-		);
+	if((window_title_notify_connection)&&(window))
+		window.disconnect(window_title_notify_connection);
 
-	if(!win._app_menu_win_ttl_fcsd_cntn_)
-		win._app_menu_win_ttl_fcsd_cntn_=win.connect
-		(
-			"focus",
-			on_signal
-		);
+	window=global.display.get_focus_window();
 
-}
+	if(!window)
+		return;
 
-function on_signal()
-{
-	let tracker=Shell.WindowTracker.get_default()
-	if
+	window_title_notify_connection=window.connect
 	(
-		(tracker.focus_app)&&
-		(!(
-			tracker.focus_app.is_on_workspace
-			(
-				global.screen.get_active_workspace()
-			)
-		))
-	)
-		return;
+			"notify::title",
+			set_title
+	);
 
-	let win=global.display.get_focus_window();
-	
-	if(win==null)
-		return;
-
-	init_window(win);
-
-	set_title(win);
+	set_title();
 }
 
-function on_window_title_changed(win)
+function on_maximize()
 {
-	if(win.has_focus())
-		set_title(win);
+	if(!only_on_maximize)
+		return;
+
+	if(!window)
+		return;
+
+	Main.panel.statusArea.appMenu._label.setText(window.get_title());
 }
 
-let app_menu_changed_connection=null;
+function on_minimize()
+{
+	if(!only_on_maximize)
+		return;
+
+	if(!window)
+		return;
+
+	let tracker=Shell.WindowTracker.get_default();
+	let app=tracker.get_window_app(window);
+
+	Main.panel.statusArea.appMenu._label.setText(app.get_name());
+}
+
+function on_only_on_maximize_setting_changed()
+{
+	only_on_maximize=settings.get_boolean('only-on-maximize');
+
+	if(!set_title())
+	{
+		var tracker=Shell.WindowTracker.get_default();
+		var app=tracker.get_window_app(window);
+
+		Main.panel.statusArea.appMenu._label.setText(app.get_name());
+	}
+}
+
+// signal connections
 let app_maximize_connection=null;
 let app_unmaximize_connection=null;
-let window_created_connection=null;
-let _settings=null;
+let focus_window_notify_connection=null;
+let window_title_notify_connection=null;
+let only_on_maximize_setting_changed_connection=null;
+
+let settings=null;
+let only_on_maximize=null;
+
+// not exactly the same as global.display.focus_window, but almost
+let window=null;
 
 function init()
 {
-	_settings=Convenience.getSettings();
+	settings=Convenience.getSettings();
+	only_on_maximize=settings.get_boolean('only-on-maximize');
 }
 
 function enable()
 {
-	app_menu_changed_connection=Main.panel.statusArea.appMenu.connect
-	(
-		'changed',
-		on_signal
-	);
-	
 	app_maximize_connection=global.window_manager.connect
 	(
 		'maximize',
-		on_signal
+		on_maximize
 	);
 
 	app_unmaximize_connection=global.window_manager.connect
 	(
 		'unmaximize',
-		on_signal
+		on_minimize
 	);
 
-	window_created_connection=global.display.connect
+	focus_window_notify_connection=global.display.connect
 	(
-		'window-created',
-		function(display,win)
-		{
-			if(Shell.WindowTracker.get_default().is_window_interesting(win))
-    			init_window(win);
-    	}
-    );
-    
-    global.get_window_actors().forEach
-    (
-    	function(win)
-    	{
-    		let meta_win=win.get_meta_window();
-    		if
-    		(
-    			(meta_win)&&
-    			(Shell.WindowTracker.get_default().is_window_interesting(meta_win))
-    		)
-    			init_window(meta_win);
-    	}
-    );
+		// thanks to autor of "Per window keyboard layout" extension for this
+		// signal. That's exactly what I needed.
+		'notify::focus-window',
+		on_focus_window_notify
+	);
 
-	on_signal();
+	only_on_maximize_setting_changed_connection=settings.connect
+	(
+		'changed::only-on-maximize',
+		on_only_on_maximize_setting_changed
+	);
+
+	on_focus_window_notify();
 }
 
 function disable()
 {
 	// disconnect signals
-	if(app_menu_changed_connection)
-		Main.panel.statusArea.appMenu.disconnect(app_menu_changed_connection);
 	if(app_maximize_connection)
 		global.window_manager.disconnect(app_maximize_connection);
 	if(app_unmaximize_connection)
 		global.window_manager.disconnect(app_unmaximize_connection);
-	if(window_created_connection)
-		global.display.disconnect(window_created_connection);
+	if(focus_window_notify_connection)
+		global.display.disconnect(focus_window_notify_connection);
+	if(window_title_notify_connection)
+		window.disconnect(window_title_notify_connection);
+	if(only_on_maximize_setting_changed_connection)
+		settings.disconnect(only_on_maximize_setting_changed_connection);
 
-	global.get_window_actors().forEach
-	(
-	function(win)
-		{
-			let meta_win=win.get_meta_window();
-			if(meta_win)
-			{
-				if(meta_win._app_menu_win_ttl_chnd_cntn_)
-				{
-					meta_win.disconnect(meta_win._app_menu_win_ttl_chnd_cntn_);
-					delete meta_win._app_menu_win_ttl_chnd_cntn_;
-				}
-
-				if(meta_win._app_menu_win_ttl_fcsd_cntn_)
-				{
-					meta_win.disconnect(meta_win._app_menu_win_ttl_fcsd_cntn_);
-					delete meta_win._app_menu_win_ttl_fcsd_cntn_;
-				}
-			}
-		}
-	);
 
 
 	//change back the app menu button's label to the application name
-	//(c)fmuellner
+	//thanks @fmuellner
 	Main.panel.statusArea.appMenu._sync();
 }
