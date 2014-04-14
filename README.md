@@ -17,15 +17,19 @@ by [Stephen Zhang] (https://github.com/StephenPCG).
 Installation
 ------------
 
-    git clone https://github.com/eternal-sorrow/app-menu-window-title.git
-    cd app-menu-window-title
-    ./autogen.sh
-    make
-    make install
+```sh
+git clone https://github.com/eternal-sorrow/app-menu-window-title.git
+cd app-menu-window-title
+./autogen.sh
+make
+make install
+```
 
-If you want to uninstall extension, cd to the dir app-menu-window-title and type:
-    make uninstall
-    
+If you want to uninstall extension, type:
+```sh
+# From the root of the project directory
+make uninstall
+```
 
 License
 -------
