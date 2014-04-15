@@ -22,7 +22,8 @@ make
 make install
 ```
 
-If you want to uninstall extension, type:
+If you want to uninstall the extension, type:
+
 ```sh
 # From the root of the project directory
 make uninstall
