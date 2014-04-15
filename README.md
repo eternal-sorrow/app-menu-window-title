@@ -1,5 +1,4 @@
-AppMenu Window Title
-====================
+# AppMenu Window Title
 
 Gnome-Shell extension that shows the current focused window's title. It doesn't
 replace the current AppButton, just changes it's label.
@@ -7,15 +6,13 @@ replace the current AppButton, just changes it's label.
 Extension has option whether to change label of AppButton only if maximized
 windows are focused or for all windows - thanks to [Shay Elkin] (https://github.com/shayel)
 
-Note
-----
+## Note
 
 For best results, use the extension
 [Extend left box] (https://extensions.gnome.org/extension/51/extend-left-box)
 by [Stephen Zhang] (https://github.com/StephenPCG).
 
-Installation
-------------
+## Installation
 
 ```sh
 git clone https://github.com/eternal-sorrow/app-menu-window-title.git
@@ -31,8 +28,7 @@ If you want to uninstall extension, type:
 make uninstall
 ```
 
-License
--------
+## License
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -47,8 +43,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see http://www.gnu.org/licenses/.
 
-Author
-------
+## Author
 
 [Eternal Sorrow](https://github.com/eternal-sorrow) (sergamena at mail dot ru)
 
