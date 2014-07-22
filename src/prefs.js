@@ -36,37 +36,38 @@ function init()
 function buildPrefsWidget() {
 	let settings = Convenience.getSettings();
 	
-	let frame = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL,
-							  border_width: 10 });
+	let frame = new Gtk.Box
+	({
+		orientation: Gtk.Orientation.HORIZONTAL,
+		border_width: 10
+	});
 
-	frame.add(new Gtk.Label({ label: "<b>"+_("Show title for:")+"</b>",
-							  use_markup: true,
-							  xalign: 0 }));
-
-	let box = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL,
-							margin_left: 20 });
-	
-	frame.add(box);
+	frame.pack_start
+	(
+		new Gtk.Label
+		({
+			label:_("Show title for maximized windows only"),
+			xalign:0
+		}),
+		true,
+		true,
+		0
+	);
 
 	let current = settings.get_boolean('only-on-maximize');
 	
-	let allWindows = new Gtk.RadioButton({ label: _("All windows") });
-	allWindows.set_active(!current);
-	allWindows.connect('toggled', function(btn) {
-		if(btn.get_active())
-			settings.set_boolean('only-on-maximize', false);
-	});
-	
-	let maximizedOnly = new Gtk.RadioButton({label: _("Maximized windows only"),
-											 group: allWindows });
-	maximizedOnly.set_active(current);
-	maximizedOnly.connect('toggled', function(btn) {
-		if(btn.get_active())
-			settings.set_boolean('only-on-maximize', true);
-	});
+	let maximized_only = new Gtk.Switch();
+	maximized_only.set_active(current);
+	maximized_only.connect
+	(
+		'notify::active',
+		function(btn)
+		{
+			settings.set_boolean('only-on-maximize', btn.get_active());
+		}
+	);
 
-	box.add(allWindows);
-	box.add(maximizedOnly);
+	frame.add(maximized_only);
 
 	frame.show_all();
 	return frame;

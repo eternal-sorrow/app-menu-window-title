@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app-menu-window-title 4\n"
 "Report-Msgid-Bugs-To: https://github.com/eternal-sorrow/app-menu-window-title/issues\n"
-"POT-Creation-Date: 2014-04-23 23:42+0300\n"
+"POT-Creation-Date: 2014-07-22 21:09+1100\n"
 "PO-Revision-Date: 2014-04-23 23:42+0300\n"
 "Last-Translator: Matanya Moses <matanya@foss.co.il>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,14 +17,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: prefs.js:45
-msgid "Show title for:"
-msgstr "הצג כותרת עבור:"
-
-#: prefs.js:56
-msgid "All windows"
-msgstr "כל החלונות"
-
-#: prefs.js:63
-msgid "Maximized windows only"
+#: ../src/prefs.js:42
+#, fuzzy
+msgid "Show title for maximized windows only"
 msgstr "חלונות מלאים בלבד"
+
+#~ msgid "Show title for:"
+#~ msgstr "הצג כותרת עבור:"
+
+#~ msgid "All windows"
+#~ msgstr "כל החלונות"

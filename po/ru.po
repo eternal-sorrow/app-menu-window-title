@@ -3,13 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Eternal Sorrow <sergamena@inbox.ru>, 2013.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: app-menu-window-title 4\n"
 "Report-Msgid-Bugs-To: https://github.com/eternal-sorrow/app-menu-window-title/issues\n"
-"POT-Creation-Date: 2013-11-10 18:01+1100\n"
-"PO-Revision-Date: 2013-11-10 18:30+1100\n"
+"POT-Creation-Date: 2014-07-22 21:08+1100\n"
+"PO-Revision-Date: 2014-07-22 21:10+1100\n"
 "Last-Translator: Eternal Sorrow <sergamena@inbox.ru>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: Russian\n"
@@ -17,14 +16,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: prefs.js:45
-msgid "Show title for:"
-msgstr "Показывать заголовок для:"
-
-#: prefs.js:56
-msgid "All windows"
-msgstr "Всех окон"
-
-#: prefs.js:63
-msgid "Maximized windows only"
-msgstr "Только развернутых на весь экран окон"
+#: ../src/prefs.js:42
+msgid "Show title for maximized windows only"
+msgstr "Показывать заголовок только развернутых на весь экран окон"

@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 dnl Created by Anjuta application wizard.
 
-AC_INIT(app-menu-window-title, 7)
+AC_INIT([app-menu-window-title], 7, [https://github.com/eternal-sorrow/app-menu-window-title/issues])
 
 AC_PREFIX_DEFAULT([${HOME}/.local/])
 
