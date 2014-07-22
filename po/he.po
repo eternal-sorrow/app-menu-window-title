@@ -23,9 +23,3 @@ msgstr ""
 #: ../src/prefs.js:42
 msgid "Show title for maximized windows only"
 msgstr "הצג כותרת בחלונות מלאים בלבד"
-
-#~ msgid "Show title for:"
-#~ msgstr "הצג כותרת עבור:"
-
-#~ msgid "All windows"
-#~ msgstr "כל החלונות"
