@@ -24,7 +24,6 @@
  *
  */
 
-const Shell=imports.gi.Shell;
 const Meta=imports.gi.Meta;
 const AppMenu=imports.ui.main.panel.statusArea.appMenu;
 const Convenience=imports.misc.extensionUtils.getCurrentExtension().imports.convenience;
@@ -40,18 +39,23 @@ function set_title()
 		(
 			window.get_maximized()!=
 			(
-				Meta.MaximizeFlags.VERTICAL|
-				Meta.MaximizeFlags.HORIZONTAL
+				Meta.MaximizeFlags.VERTICAL|Meta.MaximizeFlags.HORIZONTAL
 			)
 		)
 	)
-		return false;
+	{
+		AppMenu._label.setText
+		(
+			imports.gi.Shell.WindowTracker.get_default().get_window_app
+			(
+				window
+			).get_name()
+		);
+	}
 	else
 	{
 		AppMenu._label.setText(window.get_title());
 	}
-
-	return true;
 }
 
 function on_focus_window_notify()
@@ -71,44 +75,6 @@ function on_focus_window_notify()
 	);
 
 	set_title();
-}
-
-function on_maximize()
-{
-	if(!only_on_maximize)
-		return;
-
-	if(!window)
-		return;
-
-	AppMenu._label.setText(window.get_title());
-}
-
-function on_minimize()
-{
-	if(!only_on_maximize)
-		return;
-
-	if(!window)
-		return;
-
-	let tracker=Shell.WindowTracker.get_default();
-	let app=tracker.get_window_app(window);
-
-	AppMenu._label.setText(app.get_name());
-}
-
-function on_only_on_maximize_setting_changed()
-{
-	only_on_maximize=settings.get_boolean('only-on-maximize');
-
-	if(!set_title())
-	{
-		var tracker=Shell.WindowTracker.get_default();
-		var app=tracker.get_window_app(window);
-
-		AppMenu._label.setText(app.get_name());
-	}
 }
 
 // signal connections
@@ -135,13 +101,13 @@ function enable()
 	app_maximize_connection=global.window_manager.connect
 	(
 		'maximize',
-		on_maximize
+		set_title
 	);
 
 	app_unmaximize_connection=global.window_manager.connect
 	(
 		'unmaximize',
-		on_minimize
+		set_title
 	);
 
 	focus_window_notify_connection=global.display.connect
@@ -155,7 +121,11 @@ function enable()
 	only_on_maximize_setting_changed_connection=settings.connect
 	(
 		'changed::only-on-maximize',
-		on_only_on_maximize_setting_changed
+		function()
+		{
+			only_on_maximize=settings.get_boolean('only-on-maximize');
+			set_title();
+		}
 	);
 
 	on_focus_window_notify();
