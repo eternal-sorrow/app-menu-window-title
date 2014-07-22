@@ -2,25 +2,27 @@
 # Copyright (C) 2013 Eternal Sorrow
 # This file is distributed under the same license as the PACKAGE package.
 # Eternal Sorrow <sergamena@inbox.ru>, 2013.
+# Matanya Moses <matanya@foss.co.il>, 2014.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: app-menu-window-title 4\n"
-"Report-Msgid-Bugs-To: https://github.com/eternal-sorrow/app-menu-window-title/issues\n"
+"Report-Msgid-Bugs-To: https://github.com/eternal-sorrow/app-menu-window-"
+"title/issues\n"
 "POT-Creation-Date: 2014-07-22 21:09+1100\n"
-"PO-Revision-Date: 2014-04-23 23:42+0300\n"
+"PO-Revision-Date: 2014-07-22 14:03+0300\n"
 "Last-Translator: Matanya Moses <matanya@foss.co.il>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language-Team: עברית <>\n"
 "Language: Hebrew\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Gtranslator 2.91.6\n"
 
 #: ../src/prefs.js:42
-#, fuzzy
 msgid "Show title for maximized windows only"
-msgstr "חלונות מלאים בלבד"
+msgstr "הצג כותרת בחלונות מלאים בלבד"
 
 #~ msgid "Show title for:"
 #~ msgstr "הצג כותרת עבור:"
