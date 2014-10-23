@@ -31,7 +31,7 @@ const Convenience=imports.misc.extensionUtils.getCurrentExtension().imports.conv
 function set_title()
 {
 	if(!window)
-		return true;
+		return;
 
 	if
 	(	/* Set title only on maximized windows */
