@@ -6,6 +6,9 @@ replace the current AppButton, just changes it's label.
 Extension has option whether to change label of AppButton only if maximized
 windows are focused or for all windows - thanks to [Shay Elkin] (https://github.com/shayel)
 
+##Warning
+Work on this extension is discontinued. I use Maximus Two instead.
+
 ## Note
 
 For best results, use the extension
@@ -46,7 +49,7 @@ along with this program.  If not, see http://www.gnu.org/licenses/.
 
 ## Author
 
-[Eternal Sorrow](https://github.com/eternal-sorrow) (sergamena at mail dot ru)
+[Eternal Sorrow](https://github.com/eternal-sorrow) (sergamena at inbox dot ru)
 
 Contains code from
 [gnome-shell-extensions](https://git.gnome.org/browse/gnome-shell-extensions/)
