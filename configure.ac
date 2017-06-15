@@ -25,6 +25,5 @@ AM_SILENT_RULES([yes])
 AC_OUTPUT([
 Makefile
 src/Makefile
-schemas/Makefile
-po/Makefile.in
 ])
+dnl po/Makefile.in schemas/Makefile

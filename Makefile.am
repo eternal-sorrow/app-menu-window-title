@@ -7,8 +7,9 @@ EXTRA_DIST = \
 	README.md \
 	po/gnome-shell-extensions-app-menu-window-title.pot
 
-SUBDIRS = src po schemas
+SUBDIRS = src
+## po schemas
 
-# Remove doc directory on uninstall
+## Remove doc directory on uninstall
 uninstall-local:
 	-rm -r $(extensiondir)
