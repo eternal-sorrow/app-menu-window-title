@@ -8,11 +8,9 @@ js_DATA = \
 	metadata.json
 
 js_SCRIPTS = \
-	extension.js \
-	convenience.js \
-	prefs.js
+	extension.js
+## \
+##	convenience.js \
+##	prefs.js
 
 EXTRA_DIST = $(js_DATA) $(js_SCRIPTS)
-
-
-

@@ -26,36 +26,36 @@
 
 const Meta=imports.gi.Meta;
 const AppMenu=imports.ui.main.panel.statusArea.appMenu;
-const Convenience=imports.misc.extensionUtils.getCurrentExtension().imports.convenience;
+// const Convenience=imports.misc.extensionUtils.getCurrentExtension().imports.convenience;
 
 function set_title()
 {
 	if(!window)
 		return;
 
-	if
-	(	/* Set title only on maximized windows */
-		(only_on_maximize)&&
-		(
-			window.get_maximized()!=
-			(
-				Meta.MaximizeFlags.VERTICAL|Meta.MaximizeFlags.HORIZONTAL
-			)
-		)
-	)
-	{
-		AppMenu._label.setText
-		(
-			imports.gi.Shell.WindowTracker.get_default().get_window_app
-			(
-				window
-			).get_name()
-		);
-	}
-	else
-	{
-		AppMenu._label.setText(window.get_title());
-	}
+	// if
+	// (	/* Set title only on maximized windows */
+	// 	(only_on_maximize)&&
+	// 	(
+	// 		window.get_maximized()!=
+	// 		(
+	// 			Meta.MaximizeFlags.VERTICAL|Meta.MaximizeFlags.HORIZONTAL
+	// 		)
+	// 	)
+	// )
+	// {
+	// 	AppMenu._label.setText
+	// 	(
+	// 		imports.gi.Shell.WindowTracker.get_default().get_window_app
+	// 		(
+	// 			window
+	// 		).get_name()
+	// 	);
+	// }
+	// else
+	// {
+		AppMenu._label.set_text(window.get_title());
+	// }
 }
 
 function on_focus_window_notify()
@@ -78,55 +78,55 @@ function on_focus_window_notify()
 }
 
 // signal connections
-let app_maximize_connection=null;
-let app_unmaximize_connection=null;
+// let app_maximize_connection=null;
+// let app_unmaximize_connection=null;
 let focus_window_notify_connection=null;
 let window_title_notify_connection=null;
-let only_on_maximize_setting_changed_connection=null;
+// let only_on_maximize_setting_changed_connection=null;
 
 let settings=null;
-let only_on_maximize=null;
+// let only_on_maximize=null;
 
 // not exactly the same as global.display.focus_window, but almost
 let window=null;
 
 function init()
 {
-	settings=Convenience.getSettings();
-	only_on_maximize=settings.get_boolean('only-on-maximize');
+	// settings=Convenience.getSettings();
+	// only_on_maximize=settings.get_boolean('only-on-maximize');
 }
 
 function enable()
 {
-	app_maximize_connection=global.window_manager.connect
-	(
-		'maximize',
-		set_title
-	);
-
-	app_unmaximize_connection=global.window_manager.connect
-	(
-		'unmaximize',
-		set_title
-	);
+	// app_maximize_connection=global.window_manager.connect
+	// (
+	// 	'maximize',
+	// 	set_title
+	// );
+	//
+	// app_unmaximize_connection=global.window_manager.connect
+	// (
+	// 	'unmaximize',
+	// 	set_title
+	// );
 
 	focus_window_notify_connection=global.display.connect
 	(
-		// thanks to autor of "Per window keyboard layout" extension for this
+		// thanks to author of "Per window keyboard layout" extension for this
 		// signal. That's exactly what I needed.
 		'notify::focus-window',
 		on_focus_window_notify
 	);
 
-	only_on_maximize_setting_changed_connection=settings.connect
-	(
-		'changed::only-on-maximize',
-		function()
-		{
-			only_on_maximize=settings.get_boolean('only-on-maximize');
-			set_title();
-		}
-	);
+	// only_on_maximize_setting_changed_connection=settings.connect
+	// (
+	// 	'changed::only-on-maximize',
+	// 	function()
+	// 	{
+	// 		only_on_maximize=settings.get_boolean('only-on-maximize');
+	// 		set_title();
+	// 	}
+	// );
 
 	on_focus_window_notify();
 }
@@ -134,16 +134,16 @@ function enable()
 function disable()
 {
 	// disconnect signals
-	if(app_maximize_connection)
-		global.window_manager.disconnect(app_maximize_connection);
-	if(app_unmaximize_connection)
-		global.window_manager.disconnect(app_unmaximize_connection);
-	if(focus_window_notify_connection)
+	// if(app_maximize_connection)
+	// 	global.window_manager.disconnect(app_maximize_connection);
+	// if(app_unmaximize_connection)
+	// 	global.window_manager.disconnect(app_unmaximize_connection);
+	// if(focus_window_notify_connection)
 		global.display.disconnect(focus_window_notify_connection);
 	if((window_title_notify_connection)&&(window))
 		window.disconnect(window_title_notify_connection);
-	if(only_on_maximize_setting_changed_connection)
-		settings.disconnect(only_on_maximize_setting_changed_connection);
+	// if(only_on_maximize_setting_changed_connection)
+	// 	settings.disconnect(only_on_maximize_setting_changed_connection);
 
 
 
